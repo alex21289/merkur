@@ -1,3 +1,3 @@
-module gitlab.heimdall.local/go/merkur
+module github.com/alex21289/merkur
 
 go 1.16
