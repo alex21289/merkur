@@ -15,7 +15,7 @@ type httpClient struct {
 
 type Client interface {
 	Get(url string, headers ...http.Header) (*mcore.Response, error)
-	GetParams(url string, params params, headers ...http.Header) (*mcore.Response, error)
+	GetQuery(url string, params params, headers ...http.Header) (*mcore.Response, error)
 	Post(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
 	Put(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
 	Patch(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
@@ -34,8 +34,8 @@ func (c *httpClient) Get(url string, headers ...http.Header) (*mcore.Response, e
 	return response, nil
 }
 
-// GetParams does a get request with query parameters
-func (c *httpClient) GetParams(url string, p params, headers ...http.Header) (*mcore.Response, error) {
+// GetQuery does a get request with query parameters
+func (c *httpClient) GetQuery(url string, p params, headers ...http.Header) (*mcore.Response, error) {
 
 	if p != nil {
 		qs := p.GetQueryString()
