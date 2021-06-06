@@ -3,7 +3,7 @@ package merkur
 import (
 	"net/http"
 
-	"gitlab.heimdall.local/go/merkur/mmime"
+	"github.com/alex21289/merkur/mmime"
 )
 
 func getHeaders(headers ...http.Header) http.Header {

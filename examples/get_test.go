@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"gitlab.heimdall.local/go/merkur/mmock"
+	"github.com/alex21289/merkur/mmock"
 )
 
 func TestMain(m *testing.M) {

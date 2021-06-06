@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"gitlab.heimdall.local/go/merkur"
-	"gitlab.heimdall.local/go/merkur/mmime"
+	"github.com/alex21289/merkur"
+	"github.com/alex21289/merkur/mmime"
 )
 
 var (

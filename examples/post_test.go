@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"gitlab.heimdall.local/go/merkur/mmock"
+	"github.com/alex21289/merkur/mmock"
 )
 
 func TestCreateRepo(t *testing.T) {

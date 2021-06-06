@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.heimdall.local/go/merkur/mcore"
-	"gitlab.heimdall.local/go/merkur/mmime"
-	"gitlab.heimdall.local/go/merkur/mmock"
+	"github.com/alex21289/merkur/mcore"
+	"github.com/alex21289/merkur/mmime"
+	"github.com/alex21289/merkur/mmock"
 )
 
 const (

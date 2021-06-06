@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"sync"
 
-	"gitlab.heimdall.local/go/merkur/mcore"
+	"github.com/alex21289/merkur/mcore"
 )
 
 type httpClient struct {
