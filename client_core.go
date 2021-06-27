@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -127,6 +128,11 @@ func (c *httpClient) getRequestBody(contentType string, body interface{}) ([]byt
 
 	case mmime.ContentTypeXml:
 		return xml.Marshal(body)
+
+		// TODO: Create FormData object
+	case mmime.ContentTypeXFormUrlencoded:
+		strBody := fmt.Sprintf("%v", body)
+		return []byte(strBody), nil
 
 		// TODO: Implement FormData
 	case mmime.ContentTypeFormData:
