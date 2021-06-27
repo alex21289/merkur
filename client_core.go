@@ -52,11 +52,18 @@ func (c *httpClient) do(method string, url string, headers http.Header, body int
 		return nil, err
 	}
 
+	// Cookies
+	cookies := make(map[string]*http.Cookie)
+	for _, c := range response.Cookies() {
+		cookies[c.Name] = c
+	}
+
 	finalResponse := mcore.Response{
 		Status:     response.Status,
 		StatusCode: response.StatusCode,
 		Headers:    response.Header,
 		Body:       responseBody,
+		Cookies:    cookies,
 	}
 
 	return &finalResponse, nil

@@ -10,6 +10,7 @@ type Response struct {
 	StatusCode int
 	Headers    http.Header
 	Body       []byte
+	Cookies    map[string]*http.Cookie
 }
 
 func (r *Response) Bytes() []byte {
