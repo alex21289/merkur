@@ -5,14 +5,13 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/alex21289/merkur/formdata"
 	"github.com/alex21289/merkur/mcore"
 	"github.com/alex21289/merkur/mmime"
 	"github.com/alex21289/merkur/mmock"
@@ -136,15 +135,11 @@ func (c *httpClient) getRequestBody(contentType string, body interface{}) ([]byt
 	case mmime.ContentTypeXml:
 		return xml.Marshal(body)
 
-		// TODO: Create FormData object
 	case mmime.ContentTypeXFormUrlencoded:
-		strBody := fmt.Sprintf("%v", body)
-		return []byte(strBody), nil
+		return formdata.Marshal(body)
 
-		// TODO: Implement FormData
 	case mmime.ContentTypeFormData:
-		log.Println("Implement me")
-		return nil, nil
+		return formdata.Marshal(body)
 
 	default:
 		return json.Marshal(body)
