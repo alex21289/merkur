@@ -1,9 +1,64 @@
 package formdata
 
 import (
+	"bytes"
 	"errors"
+	"io"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"strings"
 )
+
+type multiPartFormData struct {
+	payload *bytes.Buffer
+	writer  *multipart.Writer
+	files   map[string]io.Writer
+}
+
+func NewMultiPartForm() *multiPartFormData {
+	payload := &bytes.Buffer{}
+	f := make(map[string]io.Writer)
+	return &multiPartFormData{
+		payload: payload,
+		writer:  multipart.NewWriter(payload),
+		files:   f,
+	}
+}
+
+func (m *multiPartFormData) GetPayload() *bytes.Buffer {
+	m.writer.Close()
+	return m.payload
+}
+
+func (m *multiPartFormData) GetContentType() string {
+	return m.writer.FormDataContentType()
+}
+
+func (m *multiPartFormData) AddField(name string, value string) error {
+	return m.writer.WriteField(name, value)
+}
+
+func (m *multiPartFormData) AddFile(name string, filePath string) error {
+	formFile, err := m.writer.CreateFormFile(name, filepath.Base(filePath))
+	if err != nil {
+		return err
+	}
+	m.files[name] = formFile
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = io.Copy(m.files[name], file)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 type formData map[string]string
 
