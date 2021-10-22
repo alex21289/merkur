@@ -16,6 +16,10 @@ type multiPartFormData struct {
 	files   map[string]io.Writer
 }
 
+func (m *multiPartFormData) GetWriter() *multipart.Writer {
+	return m.writer
+}
+
 func NewMultiPartForm() *multiPartFormData {
 	payload := &bytes.Buffer{}
 	f := make(map[string]io.Writer)
@@ -24,6 +28,14 @@ func NewMultiPartForm() *multiPartFormData {
 		writer:  multipart.NewWriter(payload),
 		files:   f,
 	}
+}
+
+func MarshalMulti(body interface{}) ([]byte, error) {
+	d, ok := body.(*multiPartFormData)
+	if ok {
+		return d.GetPayload().Bytes(), nil
+	}
+	return nil, errors.New("cannot marshal formData body")
 }
 
 func (m *multiPartFormData) GetPayload() *bytes.Buffer {
@@ -44,6 +56,7 @@ func (m *multiPartFormData) AddFile(name string, filePath string) error {
 	if err != nil {
 		return err
 	}
+
 	m.files[name] = formFile
 
 	file, err := os.Open(filePath)
@@ -52,7 +65,7 @@ func (m *multiPartFormData) AddFile(name string, filePath string) error {
 	}
 	defer file.Close()
 
-	_, err = io.Copy(m.files[name], file)
+	_, err = io.Copy(formFile, file)
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"strings"
@@ -139,9 +140,13 @@ func (c *httpClient) getRequestBody(contentType string, body interface{}) ([]byt
 		return formdata.Marshal(body)
 
 	case mmime.ContentTypeFormData:
-		return formdata.Marshal(body)
+		return formdata.MarshalMulti(body)
 
 	default:
+		log.Println("default")
+		if strings.Contains(strings.ToLower(contentType), mmime.ContentTypeFormData) {
+			return formdata.MarshalMulti(body)
+		}
 		return json.Marshal(body)
 	}
 }
