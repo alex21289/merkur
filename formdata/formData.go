@@ -13,7 +13,6 @@ import (
 type multiPartFormData struct {
 	payload *bytes.Buffer
 	writer  *multipart.Writer
-	files   map[string]io.Writer
 }
 
 func (m *multiPartFormData) GetWriter() *multipart.Writer {
@@ -22,11 +21,9 @@ func (m *multiPartFormData) GetWriter() *multipart.Writer {
 
 func NewMultiPartForm() *multiPartFormData {
 	payload := &bytes.Buffer{}
-	f := make(map[string]io.Writer)
 	return &multiPartFormData{
 		payload: payload,
 		writer:  multipart.NewWriter(payload),
-		files:   f,
 	}
 }
 
@@ -56,8 +53,6 @@ func (m *multiPartFormData) AddFile(name string, filePath string) error {
 	if err != nil {
 		return err
 	}
-
-	m.files[name] = formFile
 
 	file, err := os.Open(filePath)
 	if err != nil {
