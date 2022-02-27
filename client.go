@@ -15,6 +15,7 @@ type httpClient struct {
 
 type Client interface {
 	Get(url string, headers ...http.Header) (*mcore.Response, error)
+	GetBody(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
 	GetQuery(url string, params params, headers ...http.Header) (*mcore.Response, error)
 	Post(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
 	Put(url string, body interface{}, headers ...http.Header) (*mcore.Response, error)
@@ -42,6 +43,16 @@ func (c *httpClient) GetQuery(url string, p params, headers ...http.Header) (*mc
 		url = url + qs
 	}
 	response, err := c.do(http.MethodGet, url, getHeaders(headers...), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// GetBody
+func (c *httpClient) GetBody(url string, body interface{}, headers ...http.Header) (*mcore.Response, error) {
+	response, err := c.do(http.MethodGet, url, getHeaders(headers...), body)
 	if err != nil {
 		return nil, err
 	}
